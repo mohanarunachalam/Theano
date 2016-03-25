@@ -2785,6 +2785,20 @@ def local_subtensor_merge(node):
         if u.owner and isinstance(u.owner.op, Subtensor):
             # We can merge :)
             # x actual tensor on which we are picking slices
+
+            #let's see how long this chain is
+            i = 0
+            with open("/home/gokul/chain_length.txt",'a') as f:
+                f.write("================================================")
+                f.write("Current node:\n "+str(node))
+                temp_node = node
+                while(isinstance(temp_node.op,Subtensor)):
+                    i+=1
+                    temp_node = temp_node.inputs[0].owner
+                f.write("Chain Length: "+str(i))
+                
+
+
             x = u.owner.inputs[0]
             # slices of the first applied subtensor
             slices1 = get_idx_list(u.owner.inputs, u.owner.op.idx_list)
