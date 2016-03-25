@@ -2789,13 +2789,15 @@ def local_subtensor_merge(node):
             #let's see how long this chain is
             i = 0
             with open("/home/gokul/chain_length.txt",'a') as f:
-                f.write("================================================")
-                f.write("Current node:\n "+str(node))
+                f.write("================================================\n")
+                f.write("Current node:\n \t{} \n".format(str(node)))
                 temp_node = node
                 while(isinstance(temp_node.op,Subtensor)):
                     i+=1
                     temp_node = temp_node.inputs[0].owner
-                f.write("Chain Length: "+str(i))
+                if i > 2:
+                    f.write("Gotcha!\n")
+                f.write("Chain Length: {}\n".format(str(i)))
                 
 
 
