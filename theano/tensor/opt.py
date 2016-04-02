@@ -2787,14 +2787,18 @@ def local_subtensor_merge(node):
             # x actual tensor on which we are picking slices
 
             #let's see how long this chain is
-            i = 0
+            i = 1 #because there's a node, one up
             with open("/home/gokul/chain_length.txt",'a') as f:
                 f.write("================================================\n")
                 f.write("Current node:\n \t{} \n".format(str(node)))
                 temp_node = node
                 while(isinstance(temp_node.op,Subtensor)):
                     i+=1
-                    temp_node = temp_node.inputs[0].owner
+                    # temp_node = temp_node.inputs[0].owner
+                    lsm_output = temp_node.outputs[0]
+                    new_lsm = lsm_output.clients[0]
+                    #new_lsm[0] is the next lsm in the chain
+                    temp_node = new_lsm[0]
                 if i > 2:
                     f.write("Gotcha!\n")
                 f.write("Chain Length: {}\n".format(str(i)))
