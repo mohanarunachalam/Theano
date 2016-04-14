@@ -2795,13 +2795,14 @@ def local_subtensor_merge(node):
                 while(isinstance(temp_node.op,Subtensor)):
                     i+=1
                     node_output = temp_node.outputs[0] #There's only one output from a Subtensor op
-                    f.write("Node's output: {} \n".format(str(temp_node.outputs)))
-                    f.write("Node output's clients: {} \n".format(str(node_output.clients)))
+                    # f.write("Node's output: {} \n".format(str(temp_node.outputs)))
+                    # f.write("Node output's clients: {} \n".format(str(node_output.clients)))
                     subtensor_flag = False
                     for client in node_output.clients:
-                    	if isinstance(client[0].op, Subtensor):
-                    		subtensor_flag = True
+                        if isinstance(client[0].op, Subtensor):
+                            subtensor_flag = True
                             temp_node = client[0]
+                    
                     #No subtensor
                     if not subtensor_flag:
                         break
