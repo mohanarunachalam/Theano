@@ -2794,17 +2794,17 @@ def local_subtensor_merge(node):
                 temp_node = node
                 while(isinstance(temp_node.op,Subtensor)):
                     i+=1
-                    # temp_node = temp_node.inputs[0].owner
-                    lsm_output = temp_node.outputs[0]
+                    node_output = temp_node.outputs[0] #There's only one output from a Subtensor op
                     f.write("Node's output: {} \n".format(str(temp_node.outputs)))
-                    f.write("NOP's clients: {} \n".format(str(lsm_output.clients)))
-                    next_lsm = ''
-                    for client in lsm_output.clients:
-                    	f.write(str(client))
+                    f.write("Node output's clients: {} \n".format(str(node_output.clients)))
+                    subtensor_flag = False
+                    for client in node_output.clients:
                     	if isinstance(client[0].op, Subtensor):
-                    		temp_node = client[0]
-                    #new_lsm[0] is the next lsm in the chain
-                    # temp_node = new_lsm[0]
+                    		subtensor_flag = True
+                            temp_node = client[0]
+                    #No subtensor
+                    if not subtensor_flag:
+                        break
                     
                 if i > 2:
                     f.write("Gotcha!\n")
